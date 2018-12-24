@@ -1,0 +1,7 @@
+{
+  "name": "rating-input",
+  "version": "1.0.0",
+  "description": "A Basic Web Component ratings-esque inputs.",
+  "author": "Nate Clark",
+  "license": "MIT"
+}

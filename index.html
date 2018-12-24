@@ -1,0 +1,42 @@
+<html>
+
+<head>
+  <style>
+    :root {
+      font-family: Arial;
+    }
+
+    label {
+      display: block;
+      font-size: 1.3rem;
+    }
+
+
+    /* Customize styles with custom CSS properties.  */
+    rating-input {
+      --container-box-shadow: 0 3px 4px rgba(0, 0, 0, .5);
+
+      --box-checked-background: center / cover no-repeat url('./smile.png');
+      --box-size: 3rem;
+      --box-margin: .2rem;
+      --box-border-radius: 3px;
+      --box-box-shadow: 0 3px 4px rgba(0, 0, 0, .3);
+    }
+  </style>
+  <script type="module" src="./custom-rating-input.js" defer></script>
+</head>
+
+<body>
+
+  <div style="margin-bottom: 1.5rem">
+    <label for="rating">Rating</label>
+    <rating-input name="rating" value="5" max-rating="3"></rating-input>
+  </div>
+  <div>
+    <label for="another-rating">Another Rating</label>
+    <rating-input name="another-rating"></rating-input>
+  </div>
+
+</body>
+
+</html>
