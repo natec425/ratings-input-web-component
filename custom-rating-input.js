@@ -70,8 +70,10 @@ class RatingInput extends HTMLElement {
     addStars() {
         this.stars = range(1, this.maxRating).map(num => {
             const star = document.createElement('i');
+            star.tabIndex = '0';
             star.classList.add('rating-input--star');
             star.addEventListener('click', () => this.updateValue(num));
+            star.addEventListener('keydown', event => this.handleStarKeyDown(event, num));
             this.shadowRoot.appendChild(star);
             return star;
         });
@@ -86,6 +88,12 @@ class RatingInput extends HTMLElement {
                 star.classList.remove('checked');
             }
         });
+    }
+
+    handleStarKeyDown(event, num) {
+        if (!event.altKey && event.key === ' ') {
+            this.updateValue(num);
+        }
     }
 
     copyAttributesToInput() {
