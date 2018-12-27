@@ -99,7 +99,7 @@ class RatingInput extends HTMLElement {
     }
 }
 
-RatingInput.hostAttributes = ['raised', 'max-rating'];
+RatingInput.hostAttributes = ['max-rating'];
 RatingInput.template = document.createElement('template');
 RatingInput.template.innerHTML = `
 <style>
