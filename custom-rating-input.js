@@ -12,7 +12,6 @@ class RatingInput extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(
             RatingInput.template.content.cloneNode(true));
-        this.maxRating = this.getAttribute('max-rating') || 5;
     }
 
     get value() {
@@ -20,52 +19,45 @@ class RatingInput extends HTMLElement {
     }
 
     set value(newValue) {
-        this.ratingInput.value = Math.min(newValue, this.maxRating);
-        this.stars.forEach((star, index) => {
-            if (index < newValue) {
-                star.classList.add('checked');
-            } else {
-                star.classList.remove('checked');
-            }
-        });
+        this.ratingInput.value = Math.min(newValue, this.max);
+        this.stars.forEach((star, index) => this.setStarChecked(star, index));
+    }
+
+    get max() {
+        return this.ratingInput.max;
+    }
+
+    set max(value) {
+        if (value !== this.ratingInput.max) {
+            this.ratingInput.max = value;
+            this.stars.forEach(star => {
+                star.parentNode.removeChild(star);
+            });
+            this.addStars();
+        }
     }
 
     getAttribute(attributeName) {
-        if (RatingInput.hostAttributes.includes(attributeName)) {
-            return super.getAttribute(attributeName);
-        } else {
-            return this.ratingInput.getAttribute(attributeName);
-        }
+        return this.ratingInput.getAttribute(attributeName);
     }
 
     setAttribute(attributeName, value) {
         if (attributeName === 'value') {
             this.value = value;
         }
-        if (RatingInput.hostAttributes.includes(attributeName)) {
-            return super.setAttribute(attributeName, value);
-        } else {
-            return this.ratingInput.setAttribute(attributeName, value);
-        }
+        return this.ratingInput.setAttribute(attributeName, value);
     }
 
     removeAttribute(attributeName, value) {
-        if (RatingInput.hostAttributes.includes(attributeName)) {
-            return super.removeAttribute(attributeName, value);
-        } else {
-            return this.ratingInput.removeAttribute(attributeName, value);
-        }
+        return this.ratingInput.removeAttribute(attributeName, value);
     }
 
     connectedCallback() {
-        this.addChildren();
-        this.copyAttributesToInput();
-        this.value = this.getAttribute('value') || 1;
-    }
-
-    addChildren() {
         this.addInput();
+        this.copyAttributesToInput();
         this.addStars();
+        this.max = this.max || 5;
+        this.value = this.value || 1;
     }
 
     addInput() {
@@ -75,10 +67,11 @@ class RatingInput extends HTMLElement {
     }
 
     addStars() {
-        this.stars = range(1, this.maxRating).map(num => {
+        this.stars = range(1, this.max).map(num => {
             const star = document.createElement('i');
             star.tabIndex = '0';
             star.classList.add('rating-input--star');
+            this.setStarChecked(star, num - 1);
             star.addEventListener('click', () => this.value = num);
             star.addEventListener('keydown', event => this.handleStarKeyDown(event, num));
             this.shadowRoot.appendChild(star);
@@ -97,9 +90,17 @@ class RatingInput extends HTMLElement {
             this.ratingInput.setAttribute(attribute.name, attribute.value);
         }
     }
+
+    setStarChecked(star, index) {
+        if (index < this.value) {
+            star.classList.add('checked');
+        } else {
+            star.classList.remove('checked');
+        }
+
+    }
 }
 
-RatingInput.hostAttributes = ['max-rating'];
 RatingInput.template = document.createElement('template');
 RatingInput.template.innerHTML = `
 <style>
