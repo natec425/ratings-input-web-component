@@ -6,6 +6,10 @@ const range = (min, max) => {
     return result;
 };
 
+const clamp = (x, min, max) =>
+    Math.max(Math.min(x, max), min)
+
+
 class RatingInput extends HTMLElement {
     constructor() {
         super();
@@ -19,7 +23,7 @@ class RatingInput extends HTMLElement {
     }
 
     set value(newValue) {
-        this.ratingInput.value = Math.min(newValue, this.max);
+        this.ratingInput.value = clamp(newValue, 1, this.max);
         this.stars.forEach((star, index) => this.setStarChecked(star, index));
     }
 
