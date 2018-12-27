@@ -48,8 +48,8 @@ class RatingInput extends HTMLElement {
         return this.ratingInput.setAttribute(attributeName, value);
     }
 
-    removeAttribute(attributeName, value) {
-        return this.ratingInput.removeAttribute(attributeName, value);
+    removeAttribute(attributeName) {
+        return this.ratingInput.removeAttribute(attributeName);
     }
 
     connectedCallback() {
