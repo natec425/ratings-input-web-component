@@ -46,8 +46,9 @@ class RatingInput extends HTMLElement {
     setAttribute(attributeName, value) {
         if (attributeName === 'value') {
             this.value = value;
+        } else {
+            this.ratingInput.setAttribute(attributeName, value);
         }
-        return this.ratingInput.setAttribute(attributeName, value);
     }
 
     removeAttribute(attributeName) {
