@@ -32,6 +32,7 @@ class RatingInput extends HTMLElement {
     }
 
     set max(max) {
+        max = Math.max(1, max);
         if (max !== this.ratingInput.max) {
             this.ratingInput.max = max;
             this.stars.forEach(star => star.parentNode.removeChild(star));
