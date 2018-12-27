@@ -20,7 +20,14 @@ class RatingInput extends HTMLElement {
     }
 
     set value(newValue) {
-        this.updateValue(newValue);
+        this.ratingInput.value = Math.min(newValue, this.maxRating);
+        this.stars.forEach((star, index) => {
+            if (index < newValue) {
+                star.classList.add('checked');
+            } else {
+                star.classList.remove('checked');
+            }
+        });
     }
 
     getAttribute(attributeName) {
@@ -33,7 +40,7 @@ class RatingInput extends HTMLElement {
 
     setAttribute(attributeName, value) {
         if (attributeName === 'value') {
-            this.updateValue(value);
+            this.value = value;
         }
         if (RatingInput.hostAttributes.includes(attributeName)) {
             return super.setAttribute(attributeName, value);
@@ -53,7 +60,7 @@ class RatingInput extends HTMLElement {
     connectedCallback() {
         this.addChildren();
         this.copyAttributesToInput();
-        this.updateValue(this.getAttribute('value') || 1);
+        this.value = this.getAttribute('value') || 1;
     }
 
     addChildren() {
@@ -72,27 +79,16 @@ class RatingInput extends HTMLElement {
             const star = document.createElement('i');
             star.tabIndex = '0';
             star.classList.add('rating-input--star');
-            star.addEventListener('click', () => this.updateValue(num));
+            star.addEventListener('click', () => this.value = num);
             star.addEventListener('keydown', event => this.handleStarKeyDown(event, num));
             this.shadowRoot.appendChild(star);
             return star;
         });
     }
 
-    updateValue(num) {
-        this.ratingInput.value = Math.min(num, this.maxRating);
-        this.stars.forEach((star, index) => {
-            if (index < num) {
-                star.classList.add('checked');
-            } else {
-                star.classList.remove('checked');
-            }
-        });
-    }
-
     handleStarKeyDown(event, num) {
         if (!event.altKey && event.key === ' ') {
-            this.updateValue(num);
+            this.value = num;
         }
     }
 
