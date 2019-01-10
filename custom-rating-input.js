@@ -37,6 +37,7 @@ class RatingInput extends HTMLElement {
             this.ratingInput.max = max;
             this.stars.forEach(star => star.parentNode.removeChild(star));
             this.addStars();
+            this.value = Math.min(max, this.value);
         }
     }
 
