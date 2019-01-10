@@ -16,6 +16,10 @@ class RatingInput extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(
             RatingInput.template.content.cloneNode(true));
+
+        this.addInput();
+        this.copyAttributesToInput();
+        this.addStars();
     }
 
     get value() {
@@ -58,9 +62,6 @@ class RatingInput extends HTMLElement {
     }
 
     connectedCallback() {
-        this.addInput();
-        this.copyAttributesToInput();
-        this.addStars();
         this.max = this.max || 5;
         this.value = this.value || 1;
     }
