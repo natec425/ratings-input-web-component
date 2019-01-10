@@ -52,6 +52,8 @@ class RatingInput extends HTMLElement {
     setAttribute(attributeName, value) {
         if (attributeName === 'value') {
             this.value = value;
+        } else if (attributeName === 'max') {
+            this.max = value;
         } else {
             this.ratingInput.setAttribute(attributeName, value);
         }
