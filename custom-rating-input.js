@@ -7,7 +7,7 @@ const range = (min, max) => {
 };
 
 const clamp = (x, min, max) =>
-    Math.max(Math.min(x, max), min)
+    Math.max(Math.min(x, max), min);
 
 
 class RatingInput extends HTMLElement {
