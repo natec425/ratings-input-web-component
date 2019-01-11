@@ -67,7 +67,6 @@ class RatingInput extends HTMLElement {
         this.value = this.value || 1;
     }
 
-
     addStars() {
         this.stars = range(1, this.max).map(num => {
             const star = document.createElement('i');
@@ -76,6 +75,10 @@ class RatingInput extends HTMLElement {
             this.setStarChecked(star, num - 1);
             star.addEventListener('click', () => this.value = num);
             star.addEventListener('keydown', event => this.handleStarKeyDown(event, num));
+            star.addEventListener('focusin', () => this.consider(num));
+            star.addEventListener('pointerenter', () => this.consider(num));
+            star.addEventListener('focusout', () => this.stopConsidering(num));
+            this.addEventListener('pointerleave', () => this.stopConsidering());
             this.shadowRoot.appendChild(star);
             return star;
         });
@@ -99,7 +102,20 @@ class RatingInput extends HTMLElement {
         } else {
             star.classList.remove('checked');
         }
+    }
 
+    consider(index) {
+        this.stars.forEach((star, starIndex) => {
+            if (starIndex < index) {
+                star.classList.add('considering');
+            } else {
+                star.classList.remove('considering');
+            }
+        });
+    }
+
+    stopConsidering() {
+        this.stars.forEach(star => star.classList.remove('considering'));
     }
 }
 
@@ -124,6 +140,11 @@ RatingInput.template.innerHTML = `
 
   .rating-input--star.checked{
     background: var(--box-checked-background, yellow);
+  }
+
+  .rating-input--star.considering:not(.checked) {
+      background: var(--box-checked-background, yellow);
+      filter: opacity(.25);
   }
 </style>
 <input type="hidden">
