@@ -16,8 +16,7 @@ class RatingInput extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(
             RatingInput.template.content.cloneNode(true));
-
-        this.addInput();
+        this.ratingInput = this.shadowRoot.querySelector('input');
         this.copyAttributesToInput();
         this.addStars();
     }
@@ -68,11 +67,6 @@ class RatingInput extends HTMLElement {
         this.value = this.value || 1;
     }
 
-    addInput() {
-        this.ratingInput = document.createElement('input');
-        this.ratingInput.setAttribute('type', 'hidden');
-        this.shadowRoot.appendChild(this.ratingInput);
-    }
 
     addStars() {
         this.stars = range(1, this.max).map(num => {
@@ -133,6 +127,7 @@ RatingInput.template.innerHTML = `
     background: var(--box-checked-background, yellow);
   }
 </style>
+<input type="hidden">
 <slot></slot>`;
 
 customElements.define('rating-input', RatingInput);
