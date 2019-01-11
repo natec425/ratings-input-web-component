@@ -108,9 +108,8 @@ RatingInput.template.innerHTML = `
 <style>
   :host {
       display: inline-block;
-      border-radius: var(--container-border-radius, 3px);
-      padding: var(--container-padding, .25rem);
-      box-shadow: var(--container-box-shadow);
+      border-radius: 3px;
+      padding: .25rem;
   }
 
   .rating-input--star {
